@@ -2,6 +2,7 @@
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QTextEdit>
+#include <QPushButton>
 
 int main(int argc, char *argv[])
 {
@@ -13,8 +14,10 @@ int main(int argc, char *argv[])
 
 	QTextEdit input(&widget);
 	input.setMinimumHeight(205); // usually shows all of the Track 1 data
+	QPushButton inspect("&Inspect", &widget);
 
 	layout.addWidget(&input);
+	layout.addWidget(&inspect);
 	widget.setLayout(&layout);
 
 	widget.show();
