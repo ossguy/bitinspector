@@ -1,2 +1,3 @@
 # Input
-SOURCES += main.cpp
+SOURCES += main.cpp bitprocessor.cpp
+HEADERS += bitprocessor.h

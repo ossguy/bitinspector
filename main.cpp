@@ -3,6 +3,7 @@
 #include <QVBoxLayout>
 #include <QTextEdit>
 #include <QPushButton>
+#include "bitprocessor.h"
 
 int main(int argc, char *argv[])
 {
@@ -19,6 +20,9 @@ int main(int argc, char *argv[])
 	layout.addWidget(&input);
 	layout.addWidget(&inspect);
 	widget.setLayout(&layout);
+
+	BitProcessor bp;
+	QObject::connect(&inspect, SIGNAL(released()), &bp, SLOT(decodeBits()));
 
 	widget.show();
 	return app.exec();
