@@ -1,3 +1,2 @@
 #!/bin/sh
-qmake -project
-qmake
+/usr/bin/env qmake
