@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 	layout.addWidget(&inspect);
 	widget.setLayout(&layout);
 
-	BitProcessor bp;
+	BitProcessor bp(&input);
 	QObject::connect(&inspect, SIGNAL(released()), &bp, SLOT(decodeBits()));
 
 	widget.show();
