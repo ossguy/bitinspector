@@ -1,21 +1,23 @@
 #ifndef H_BITPROCESSOR
 #define H_BITPROCESSOR
 
-#include <QObject>
+#include <QWidget>
 #include <QTextEdit>
+#include <QPushButton>
 
-class BitProcessor : public QObject
+class BitProcessor : public QWidget
 {
 	Q_OBJECT
 
 public:
-	BitProcessor(QTextEdit* input);
+	BitProcessor(QWidget* parent = 0);
 
 public slots:
 	void decodeBits();
 
 private:
 	QTextEdit* input;
+	QPushButton* inspect;
 };
 
 #endif // H_BITPROCESSOR

@@ -1,10 +1,23 @@
 #include "bitprocessor.h"
 #include "bitconvert.h"
 #include <iostream> // TODO: debugging; remove 
+#include <QVBoxLayout>
 
-BitProcessor::BitProcessor(QTextEdit* input)
-	: input(input)
-{}
+BitProcessor::BitProcessor(QWidget* parent)
+	: QWidget(parent)
+{
+	input = new QTextEdit;
+	inspect = new QPushButton(tr("&Inspect"));
+
+	QVBoxLayout* layout = new QVBoxLayout;
+	layout->addWidget(input);
+	layout->addWidget(inspect);
+	setLayout(layout);
+
+	setWindowTitle(tr("Bit Inspector"));
+
+	connect(inspect, SIGNAL(released()), this, SLOT(decodeBits()));
+}
 
 void BitProcessor::decodeBits()
 {
