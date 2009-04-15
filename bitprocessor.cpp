@@ -8,15 +8,47 @@ BitProcessor::BitProcessor(QWidget* parent)
 {
 	input = new QTextEdit;
 	inspect = new QPushButton(tr("&Inspect"));
+	out_t1 = new QLineEdit;
+	out_t2 = new QLineEdit;
+	out_t3 = new QLineEdit;
+	another = new QPushButton(tr("Inspect &Another"));
 
+	// hide widgets for output mode
+	out_t1->hide();
+	out_t2->hide();
+	out_t3->hide();
+	another->hide();
+
+	// arrange input and output widgets in layout
 	QVBoxLayout* layout = new QVBoxLayout;
 	layout->addWidget(input);
 	layout->addWidget(inspect);
+	layout->addWidget(out_t1);
+	layout->addWidget(out_t2);
+	layout->addWidget(out_t3);
+	layout->addWidget(another);
 	setLayout(layout);
 
 	setWindowTitle(tr("Bit Inspector"));
 
+	// on "Inspect", decode the bits in the input box
 	connect(inspect, SIGNAL(released()), this, SLOT(decodeBits()));
+
+	// on "Inspect", hide input widgets and show output widgets
+	connect(inspect, SIGNAL(released()), input, SLOT(hide()));
+	connect(inspect, SIGNAL(released()), inspect, SLOT(hide()));
+	connect(inspect, SIGNAL(released()), out_t1, SLOT(show()));
+	connect(inspect, SIGNAL(released()), out_t2, SLOT(show()));
+	connect(inspect, SIGNAL(released()), out_t3, SLOT(show()));
+	connect(inspect, SIGNAL(released()), another, SLOT(show()));
+
+	// on "Inspect Another", show input widgets and hide output widgets
+	connect(another, SIGNAL(released()), input, SLOT(show()));
+	connect(another, SIGNAL(released()), inspect, SLOT(show()));
+	connect(another, SIGNAL(released()), out_t1, SLOT(hide()));
+	connect(another, SIGNAL(released()), out_t2, SLOT(hide()));
+	connect(another, SIGNAL(released()), out_t3, SLOT(hide()));
+	connect(another, SIGNAL(released()), another, SLOT(hide()));
 }
 
 void BitProcessor::decodeBits()
