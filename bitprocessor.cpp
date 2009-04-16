@@ -53,10 +53,6 @@ BitProcessor::BitProcessor(QWidget* parent)
 
 void BitProcessor::decodeBits()
 {
-	std::cout << "in decodeBits" << std::endl; // TODO: debugging; remove
-	std::cout << "\tinput: " << input->toPlainText().toStdString()
-		<< std::endl; // TODO: debugging; remove
-
 	struct bc_input in;
 	struct bc_decoded result;
 
@@ -88,23 +84,24 @@ void BitProcessor::decodeBits()
 
 	int rv = bc_decode(&in, &result);
 	if (rv) {
+		// TODO: for debugging; replace with graphical error output
 		std::cout << "\tdecode error (" << rv << "): "
 			<< bc_strerror(rv) << std::endl;
 	} else {
 		if (NULL == result.t1) {
-			std::cout << "\ttrack 1 has no data" << std::endl;
+			out_t1->clear();
 		} else {
-			std::cout << "\ttrack 1: " << result.t1 << std::endl;
+			out_t1->setText(QString(result.t1));
 		}
 		if (NULL == result.t2) {
-			std::cout << "\ttrack 2 has no data" << std::endl;
+			out_t2->clear();
 		} else {
-			std::cout << "\ttrack 2: " << result.t2 << std::endl;
+			out_t2->setText(QString(result.t2));
 		}
 		if (NULL == result.t3) {
-			std::cout << "\ttrack 3 has no data" << std::endl;
+			out_t3->clear();
 		} else {
-			std::cout << "\ttrack 3: " << result.t3 << std::endl;
+			out_t3->setText(QString(result.t3));
 		}
 	}
 
