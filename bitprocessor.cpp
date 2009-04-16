@@ -2,6 +2,7 @@
 #include "bitconvert.h"
 #include <iostream> // TODO: debugging; remove 
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 
 BitProcessor::BitProcessor(QWidget* parent)
 	: QWidget(parent)
@@ -11,6 +12,8 @@ BitProcessor::BitProcessor(QWidget* parent)
 	out_t1 = new QLineEdit;
 	out_t2 = new QLineEdit;
 	out_t3 = new QLineEdit;
+	show_input = new QPushButton(tr("S&how Input"));
+	hide_input = new QPushButton(tr("&Hide Input"));
 	another = new QPushButton(tr("Inspect &Another"));
 
 	// hide widgets for output mode
@@ -18,6 +21,8 @@ BitProcessor::BitProcessor(QWidget* parent)
 	out_t2->hide();
 	out_t3->hide();
 	another->hide();
+	show_input->hide();
+	hide_input->hide();
 
 	// arrange input and output widgets in layout
 	QVBoxLayout* layout = new QVBoxLayout;
@@ -26,8 +31,15 @@ BitProcessor::BitProcessor(QWidget* parent)
 	layout->addWidget(out_t1);
 	layout->addWidget(out_t2);
 	layout->addWidget(out_t3);
-	layout->addWidget(another);
+
+	QHBoxLayout* out_buttons = new QHBoxLayout;
+	out_buttons->addWidget(show_input);
+	out_buttons->addWidget(hide_input);
+	out_buttons->addWidget(another);
+	layout->addLayout(out_buttons);
+
 	setLayout(layout);
+
 
 	setWindowTitle(tr("Bit Inspector"));
 
@@ -40,6 +52,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 	connect(inspect, SIGNAL(released()), out_t1, SLOT(show()));
 	connect(inspect, SIGNAL(released()), out_t2, SLOT(show()));
 	connect(inspect, SIGNAL(released()), out_t3, SLOT(show()));
+	connect(inspect, SIGNAL(released()), show_input, SLOT(show()));
 	connect(inspect, SIGNAL(released()), another, SLOT(show()));
 
 	// on "Inspect Another", show input widgets and hide output widgets
@@ -48,7 +61,19 @@ BitProcessor::BitProcessor(QWidget* parent)
 	connect(another, SIGNAL(released()), out_t1, SLOT(hide()));
 	connect(another, SIGNAL(released()), out_t2, SLOT(hide()));
 	connect(another, SIGNAL(released()), out_t3, SLOT(hide()));
+	connect(another, SIGNAL(released()), show_input, SLOT(hide()));
+	connect(another, SIGNAL(released()), hide_input, SLOT(hide()));
 	connect(another, SIGNAL(released()), another, SLOT(hide()));
+
+	// on "Show Input", show the input textbox and replace with "Hide Input"
+	connect(show_input, SIGNAL(released()), input, SLOT(show()));
+	connect(show_input, SIGNAL(released()), show_input, SLOT(hide()));
+	connect(show_input, SIGNAL(released()), hide_input, SLOT(show()));
+
+	// on "Hide Input", hide the input textbox and replace with "Show Input"
+	connect(hide_input, SIGNAL(released()), input, SLOT(hide()));
+	connect(hide_input, SIGNAL(released()), hide_input, SLOT(hide()));
+	connect(hide_input, SIGNAL(released()), show_input, SLOT(show()));
 }
 
 void BitProcessor::decodeBits()

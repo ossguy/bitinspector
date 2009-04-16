@@ -22,6 +22,8 @@ private:
 	QLineEdit* out_t1;
 	QLineEdit* out_t2;
 	QLineEdit* out_t3;
+	QPushButton* show_input;
+	QPushButton* hide_input;
 	QPushButton* another;
 };
 
