@@ -18,6 +18,12 @@ Build instructions for other Unix-like operating systems should be similar.  If
 you encounter any problems building libbitconvert or Bit Inspector, please let
 Denver Gingerich know at denver@ossguy.com.
 
+To use Bit Inspector, paste a series of ASCII 1s and 0s that you would like to
+convert into the text box then click "Inspect".  Example data can be found in
+the libbitconvert/test_data folder.  To use a file in that folder, copy its
+contents into the text box and click "Inspect".  This will show you what is
+encoded in the 1s and 0s.
+
 Windows and Mac OS X build instructions will be added soon.
 
 --
