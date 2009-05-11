@@ -115,6 +115,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 	connect(another, SIGNAL(released()), instructions, SLOT(show()));
 	connect(another, SIGNAL(released()), example_bits, SLOT(show()));
 	connect(another, SIGNAL(released()), input, SLOT(show()));
+	connect(another, SIGNAL(released()), input, SLOT(selectAll()));
 	connect(another, SIGNAL(released()), inspect, SLOT(show()));
 	connect(another, SIGNAL(released()), out_t1, SLOT(hide()));
 	connect(another, SIGNAL(released()), out_t2, SLOT(hide()));
