@@ -26,6 +26,7 @@
 #include <QTextEdit>
 #include <QPushButton>
 #include <QLineEdit>
+#include <QTableWidget>
 
 class BitProcessor : public QWidget
 {
@@ -43,6 +44,7 @@ private:
 	QLineEdit* out_t1;
 	QLineEdit* out_t2;
 	QLineEdit* out_t3;
+	QTableWidget* fields;
 	QPushButton* show_input;
 	QPushButton* hide_input;
 	QPushButton* another;

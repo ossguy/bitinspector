@@ -33,14 +33,23 @@ BitProcessor::BitProcessor(QWidget* parent)
 	out_t1 = new QLineEdit;
 	out_t2 = new QLineEdit;
 	out_t3 = new QLineEdit;
+	fields = new QTableWidget;
 	show_input = new QPushButton(tr("S&how Input"));
 	hide_input = new QPushButton(tr("&Hide Input"));
 	another = new QPushButton(tr("Inspect &Another"));
+
+	// configure the fields table
+	fields->setRowCount(0);
+	fields->setColumnCount(3);
+	fields->setHorizontalHeaderLabels(QStringList()
+		<< QString(tr("Field name")) << QString(tr("Track"))
+		<< QString(tr("Value on card")));
 
 	// hide widgets for output mode
 	out_t1->hide();
 	out_t2->hide();
 	out_t3->hide();
+	fields->hide();
 	another->hide();
 	show_input->hide();
 	hide_input->hide();
@@ -52,6 +61,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 	layout->addWidget(out_t1);
 	layout->addWidget(out_t2);
 	layout->addWidget(out_t3);
+	layout->addWidget(fields);
 
 	QHBoxLayout* out_buttons = new QHBoxLayout;
 	out_buttons->addWidget(show_input);
@@ -73,6 +83,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 	connect(inspect, SIGNAL(released()), out_t1, SLOT(show()));
 	connect(inspect, SIGNAL(released()), out_t2, SLOT(show()));
 	connect(inspect, SIGNAL(released()), out_t3, SLOT(show()));
+	connect(inspect, SIGNAL(released()), fields, SLOT(show()));
 	connect(inspect, SIGNAL(released()), show_input, SLOT(show()));
 	connect(inspect, SIGNAL(released()), another, SLOT(show()));
 
@@ -82,6 +93,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 	connect(another, SIGNAL(released()), out_t1, SLOT(hide()));
 	connect(another, SIGNAL(released()), out_t2, SLOT(hide()));
 	connect(another, SIGNAL(released()), out_t3, SLOT(hide()));
+	connect(another, SIGNAL(released()), fields, SLOT(hide()));
 	connect(another, SIGNAL(released()), show_input, SLOT(hide()));
 	connect(another, SIGNAL(released()), hide_input, SLOT(hide()));
 	connect(another, SIGNAL(released()), another, SLOT(hide()));
@@ -148,6 +160,50 @@ void BitProcessor::decodeBits()
 			out_t3->clear();
 		} else {
 			out_t3->setText(QString(result.t3));
+		}
+
+		// clear the fields table
+		while (fields->rowCount() > 0) {
+			fields->removeRow(0);
+		}
+
+		rv = bc_find_fields(&result);
+		if (rv) {
+			// TODO: for debugging; replace with graphical output
+			std::cout << "\tfind fields error (" << rv << "): "
+				<< bc_strerror(rv) << std::endl;
+
+			// TODO: output "unknown card"
+		} else {
+			// TODO: output name of card (ie. "Driver's license")
+
+			int i;
+
+			// add new card data to the table
+			for (i = 0; result.field_names[i] != NULL; i++) {
+				fields->insertRow(i);
+				fields->setItem(i, 0,
+					new QTableWidgetItem(
+					QString(result.field_names[i])) );
+
+				/* NOTE: you should verify that the BC_TRACK_*
+				 * constants in the version of libbitconvert
+				 * that you are using map cleanly onto integers
+				 * if you wish to print the tracks using the
+				 * method below; the library may change to
+				 * allow tracks such as BC_TRACK_JIS_II, which
+				 * would not print correctly using this method
+				 */
+				fields->setItem(i, 1,
+					new QTableWidgetItem(
+					QString::number(result.field_tracks[i]))
+					);
+
+				fields->setItem(i, 2,
+					new QTableWidgetItem(
+					QString(result.field_values[i])) );
+			}
+			fields->resizeColumnsToContents();
 		}
 	}
 
