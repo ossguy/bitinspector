@@ -23,6 +23,7 @@
 #define H_BITPROCESSOR
 
 #include <QWidget>
+#include <QLabel>
 #include <QTextEdit>
 #include <QPushButton>
 #include <QLineEdit>
@@ -39,6 +40,8 @@ public slots:
 	void decodeBits();
 
 private:
+	QLabel* instructions;
+	QLabel* example_bits;
 	QTextEdit* input;
 	QPushButton* inspect;
 	QLineEdit* out_t1;

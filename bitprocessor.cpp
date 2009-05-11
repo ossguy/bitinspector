@@ -28,6 +28,8 @@
 BitProcessor::BitProcessor(QWidget* parent)
 	: QWidget(parent)
 {
+	instructions = new QLabel;
+	example_bits = new QLabel;
 	input = new QTextEdit;
 	inspect = new QPushButton(tr("&Inspect"));
 	out_t1 = new QLineEdit;
@@ -37,6 +39,24 @@ BitProcessor::BitProcessor(QWidget* parent)
 	show_input = new QPushButton(tr("S&how Input"));
 	hide_input = new QPushButton(tr("&Hide Input"));
 	another = new QPushButton(tr("Inspect &Another"));
+
+	// configure the instructions label
+	instructions->setText(tr("If you have a Bit Reader USB or compatible "
+		"device connected to this computer, swipe a card and click "
+		"\"Inspect\".  You can also paste a raw bitstream (1s and 0s) "
+		"into the textbox.  If you don't have a bitstream, you can use "
+		"this one:"));
+	instructions->setWordWrap(true);
+
+	// configure the label showing an example bitstream
+	example_bits->setText(tr(
+		"00000001010001001011010100101100111001011011111000000000\n"
+		"000001101010000010001100100100101011111100000"));
+	// the following two lines are from
+	//  http://www.virtualbox.org/browser/trunk/src/VBox/Frontends/VirtualBox/src/QILabel.cpp?rev=16304&format=html#L304
+	example_bits->setTextInteractionFlags(Qt::TextBrowserInteraction);
+	// this keeps focus on the input textbox:
+	example_bits->setFocusPolicy(Qt::NoFocus);
 
 	// configure the fields table
 	fields->setRowCount(0);
@@ -56,6 +76,8 @@ BitProcessor::BitProcessor(QWidget* parent)
 
 	// arrange input and output widgets in layout
 	QVBoxLayout* layout = new QVBoxLayout;
+	layout->addWidget(instructions);
+	layout->addWidget(example_bits);
 	layout->addWidget(input);
 	layout->addWidget(inspect);
 	layout->addWidget(out_t1);
@@ -78,6 +100,8 @@ BitProcessor::BitProcessor(QWidget* parent)
 	connect(inspect, SIGNAL(released()), this, SLOT(decodeBits()));
 
 	// on "Inspect", hide input widgets and show output widgets
+	connect(inspect, SIGNAL(released()), instructions, SLOT(hide()));
+	connect(inspect, SIGNAL(released()), example_bits, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), input, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), inspect, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), out_t1, SLOT(show()));
@@ -88,6 +112,8 @@ BitProcessor::BitProcessor(QWidget* parent)
 	connect(inspect, SIGNAL(released()), another, SLOT(show()));
 
 	// on "Inspect Another", show input widgets and hide output widgets
+	connect(another, SIGNAL(released()), instructions, SLOT(show()));
+	connect(another, SIGNAL(released()), example_bits, SLOT(show()));
 	connect(another, SIGNAL(released()), input, SLOT(show()));
 	connect(another, SIGNAL(released()), inspect, SLOT(show()));
 	connect(another, SIGNAL(released()), out_t1, SLOT(hide()));
