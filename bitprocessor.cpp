@@ -21,7 +21,6 @@
 
 #include "bitprocessor.h"
 #include "bitconvert.h"
-#include <iostream> // TODO: debugging; remove 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
@@ -62,6 +61,9 @@ BitProcessor::BitProcessor(QWidget* parent)
 	example_bits->setTextInteractionFlags(Qt::TextBrowserInteraction);
 	// this keeps focus on the input textbox:
 	example_bits->setFocusPolicy(Qt::NoFocus);
+
+	// set name for status label; allows us to set stylesheet
+	status->setObjectName("status");
 
 	// configure the input and track labels
 	label_input->setText(tr("Input"));
@@ -227,22 +229,23 @@ void BitProcessor::decodeBits()
 		fields->removeRow(0);
 	}
 
-	status->clear();
 	if (rv) {
-		// TODO: for debugging; replace with graphical error output
-		std::cout << "\tdecode error (" << rv << "): "
-			<< bc_strerror(rv) << std::endl;
+		setStyleSheet("QLabel#status { color: red }");
+		status->setText(tr("Decode error (") + QString::number(rv) +
+			tr("): ") + QString(bc_strerror(rv)));
 	} else {
 		rv = bc_find_fields(&result);
 		if (rv) {
-			// TODO: for debugging; replace with graphical output
-			std::cout << "\tfind fields error (" << rv << "): "
-				<< bc_strerror(rv) << std::endl;
+			setStyleSheet("QLabel#status { color: red }");
+			status->setText(tr("Find fields error (") +
+				QString::number(rv) + tr("): ") +
+				QString(bc_strerror(rv)));
 
 			// TODO: output "unknown card"
 		} else {
 			// put the card name in the status bar
-			status->setText(QString(tr("Card name: ")) +
+			setStyleSheet("");
+			status->setText(tr("Card name: ") +
 				QString(result.name));
 
 			int i;
