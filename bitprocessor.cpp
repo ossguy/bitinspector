@@ -48,8 +48,8 @@ BitProcessor::BitProcessor(QWidget* parent)
 	instructions->setText(tr("If you have a Bit Reader USB or compatible "
 		"device connected to this computer, swipe a card and click "
 		"\"Inspect\".  You can also paste a raw bitstream (1s and 0s) "
-		"into the textbox.  If you don't have a bitstream, you can use "
-		"this one:"));
+		"into the textbox.  If you don't have a bitstream, you can "
+		"copy and paste this one into the textbox:"));
 	instructions->setWordWrap(true);
 
 	// configure the label showing an example bitstream
