@@ -199,32 +199,34 @@ void BitProcessor::decodeBits()
 	}
 
 	int rv = bc_decode(&in, &result);
+
+	// populate the fields; result fields will be sane even if rv is error
+	if (NULL == result.t1) {
+		out_t1->clear();
+	} else {
+		out_t1->setText(QString(result.t1));
+	}
+	if (NULL == result.t2) {
+		out_t2->clear();
+	} else {
+		out_t2->setText(QString(result.t2));
+	}
+	if (NULL == result.t3) {
+		out_t3->clear();
+	} else {
+		out_t3->setText(QString(result.t3));
+	}
+
+	// clear the fields table
+	while (fields->rowCount() > 0) {
+		fields->removeRow(0);
+	}
+
 	if (rv) {
 		// TODO: for debugging; replace with graphical error output
 		std::cout << "\tdecode error (" << rv << "): "
 			<< bc_strerror(rv) << std::endl;
 	} else {
-		if (NULL == result.t1) {
-			out_t1->clear();
-		} else {
-			out_t1->setText(QString(result.t1));
-		}
-		if (NULL == result.t2) {
-			out_t2->clear();
-		} else {
-			out_t2->setText(QString(result.t2));
-		}
-		if (NULL == result.t3) {
-			out_t3->clear();
-		} else {
-			out_t3->setText(QString(result.t3));
-		}
-
-		// clear the fields table
-		while (fields->rowCount() > 0) {
-			fields->removeRow(0);
-		}
-
 		rv = bc_find_fields(&result);
 		if (rv) {
 			// TODO: for debugging; replace with graphical output
