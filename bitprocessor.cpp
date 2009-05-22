@@ -79,7 +79,6 @@ BitProcessor::BitProcessor(QWidget* parent)
 	QVBoxLayout* layout = new QVBoxLayout;
 	layout->addWidget(instructions);
 	layout->addWidget(example_bits);
-	layout->addWidget(inspect);
 
 	QGridLayout* grid = new QGridLayout;
 	grid->addWidget(label_input, 0, 0, Qt::AlignTop);
@@ -92,6 +91,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 	grid->addWidget(out_t3, 3, 1);
 	layout->addLayout(grid);
 
+	layout->addWidget(inspect); // at the bottom in input mode
 	layout->addWidget(fields);
 
 	QHBoxLayout* out_buttons = new QHBoxLayout;
