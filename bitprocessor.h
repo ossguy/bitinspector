@@ -43,6 +43,8 @@ private:
 	QLabel* example_bits_heading;
 	QLabel* example_bits;
 	QLabel* links;
+	QPushButton* more_info;
+	QPushButton* less_info;
 	QTextEdit* input;
 	QPushButton* inspect;
 	QLabel* status;
