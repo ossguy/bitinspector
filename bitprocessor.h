@@ -24,6 +24,7 @@
 
 #include <QWidget>
 #include <QLabel>
+#include <QMessageBox>
 #include <QTextEdit>
 #include <QPushButton>
 #include <QTableWidget>
@@ -42,9 +43,8 @@ private:
 	QLabel* instructions;
 	QLabel* example_bits_heading;
 	QLabel* example_bits;
-	QLabel* links;
+	QMessageBox* links;
 	QPushButton* more_info;
-	QPushButton* less_info;
 	QTextEdit* input;
 	QPushButton* inspect;
 	QLabel* status;

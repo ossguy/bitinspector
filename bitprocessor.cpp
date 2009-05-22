@@ -30,9 +30,8 @@ BitProcessor::BitProcessor(QWidget* parent)
 	instructions = new QLabel;
 	example_bits_heading = new QLabel;
 	example_bits = new QLabel;
-	links = new QLabel;
-	more_info = new QPushButton(tr("More In&formation"));
-	less_info = new QPushButton(tr("Less In&formation"));
+	links = new QMessageBox;
+	more_info = new QPushButton(tr("&More Information"));
 	input = new QTextEdit;
 	inspect = new QPushButton(tr("&Inspect"));
 	status = new QLabel;
@@ -71,8 +70,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 	// this keeps focus on the input textbox:
 	example_bits->setFocusPolicy(Qt::NoFocus);
 
-	// configure the label containing links to bitstreams and contact info
-	links->setOpenExternalLinks(true);
+	// configure the message box with links to bitstreams and contact info
 	links->setText(tr("Additional example bitstreams are available at:<br>"
 		"<a href=\"http://github.com/ossguy/libbitconvert/tree/master/test_data\">http://github.com/ossguy/libbitconvert/tree/master/test_data</a><br><br>"
 		"You can also construct your own using the charts at:<br>"
@@ -80,7 +78,6 @@ BitProcessor::BitProcessor(QWidget* parent)
 		"Please report any problems with Bit Inspector or suggestions "
 		"for improvement to <a href=\"mailto:denver@ossguy.com\">denver@ossguy.com</a>."
 		));
-	links->setWordWrap(true);
 
 	// set name for status label; allows us to set stylesheet
 	status->setObjectName("status");
@@ -106,9 +103,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 	layout->addWidget(instructions);
 	layout->addWidget(example_bits_heading);
 	layout->addWidget(example_bits);
-	layout->addWidget(links);
 	layout->addWidget(more_info);
-	layout->addWidget(less_info);
 	layout->addWidget(status);
 
 	QGridLayout* grid = new QGridLayout;
@@ -134,12 +129,6 @@ BitProcessor::BitProcessor(QWidget* parent)
 
 	setLayout(layout);
 
-	// hide "Less Information" button and extra info
-	example_bits_heading->hide();
-	example_bits->hide();
-	links->hide();
-	less_info->hide();
-
 	// hide widgets for output mode
 	status->hide();
 	label_input->hide();
@@ -164,9 +153,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 	connect(inspect, SIGNAL(released()), instructions, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), example_bits_heading, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), example_bits, SLOT(hide()));
-	connect(inspect, SIGNAL(released()), links, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), more_info, SLOT(hide()));
-	connect(inspect, SIGNAL(released()), less_info, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), input, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), inspect, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), status, SLOT(show()));
@@ -182,6 +169,8 @@ BitProcessor::BitProcessor(QWidget* parent)
 
 	// on "Inspect Another", show input widgets and hide output widgets
 	connect(another, SIGNAL(released()), instructions, SLOT(show()));
+	connect(another, SIGNAL(released()), example_bits_heading, SLOT(show()));
+	connect(another, SIGNAL(released()), example_bits, SLOT(show()));
 	connect(another, SIGNAL(released()), more_info, SLOT(show()));
 	connect(another, SIGNAL(released()), input, SLOT(show()));
 	connect(another, SIGNAL(released()), input, SLOT(selectAll()));
@@ -211,25 +200,8 @@ BitProcessor::BitProcessor(QWidget* parent)
 	connect(hide_input, SIGNAL(released()), hide_input, SLOT(hide()));
 	connect(hide_input, SIGNAL(released()), show_input, SLOT(show()));
 
-	// on "More Information", show the extra info and "Less Information"
-	connect(more_info, SIGNAL(released()), example_bits_heading, SLOT(show()));
-	connect(more_info, SIGNAL(released()), example_bits, SLOT(show()));
-	connect(more_info, SIGNAL(released()), links, SLOT(show()));
-	connect(more_info, SIGNAL(released()), more_info, SLOT(hide()));
-	connect(more_info, SIGNAL(released()), less_info, SLOT(show()));
-
-	// on "Less Information", hide extra info and show "Less Information"
-	connect(less_info, SIGNAL(released()), example_bits_heading, SLOT(hide()));
-	connect(less_info, SIGNAL(released()), example_bits, SLOT(hide()));
-	connect(less_info, SIGNAL(released()), links, SLOT(hide()));
-	connect(less_info, SIGNAL(released()), less_info, SLOT(hide()));
-	connect(less_info, SIGNAL(released()), more_info, SLOT(show()));
-
-	// required for hidden information to fit properly when unhidden
-	// * width must be wide enough for example bits
-	// * height must be tall enough for information labels given the width
-	setMinimumWidth(500);	// bare minimum is 470 on Ubuntu 9.04
-	setMinimumHeight(500);	// bare minimum is also 470 on Ubuntu 9.04
+	// on "More Information", show links message box
+	connect(more_info, SIGNAL(released()), links, SLOT(exec()));
 }
 
 void BitProcessor::decodeBits()
