@@ -29,6 +29,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 {
 	instructions = new QLabel;
 	example_bits = new QLabel;
+	links = new QLabel;
 	input = new QTextEdit;
 	inspect = new QPushButton(tr("&Inspect"));
 	status = new QLabel;
@@ -63,6 +64,17 @@ BitProcessor::BitProcessor(QWidget* parent)
 	// this keeps focus on the input textbox:
 	example_bits->setFocusPolicy(Qt::NoFocus);
 
+	// configure the label containing links to bitstreams and contact info
+	links->setOpenExternalLinks(true);
+	links->setText(tr("Additional example bitstreams are available at:<br>"
+		"<a href=\"http://github.com/ossguy/libbitconvert/tree/master/test_data\">http://github.com/ossguy/libbitconvert/tree/master/test_data</a><br><br>"
+		"You can also construct your own using the charts at:<br>"
+		"<a href=\"http://www.cyberd.co.uk/support/technotes/isocards.htm\">http://www.cyberd.co.uk/support/technotes/isocards.htm</a><br><br>"
+		"Please report any problems with Bit Inspector or suggestions "
+		"for improvement to <a href=\"mailto:denver@ossguy.com\">denver@ossguy.com</a>."
+		));
+	links->setWordWrap(true);
+
 	// set name for status label; allows us to set stylesheet
 	status->setObjectName("status");
 
@@ -86,6 +98,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 	QVBoxLayout* layout = new QVBoxLayout;
 	layout->addWidget(instructions);
 	layout->addWidget(example_bits);
+	layout->addWidget(links);
 	layout->addWidget(status);
 
 	QGridLayout* grid = new QGridLayout;
@@ -134,6 +147,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 	// on "Inspect", hide input widgets and show output widgets
 	connect(inspect, SIGNAL(released()), instructions, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), example_bits, SLOT(hide()));
+	connect(inspect, SIGNAL(released()), links, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), input, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), inspect, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), status, SLOT(show()));
@@ -150,6 +164,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 	// on "Inspect Another", show input widgets and hide output widgets
 	connect(another, SIGNAL(released()), instructions, SLOT(show()));
 	connect(another, SIGNAL(released()), example_bits, SLOT(show()));
+	connect(another, SIGNAL(released()), links, SLOT(show()));
 	connect(another, SIGNAL(released()), input, SLOT(show()));
 	connect(another, SIGNAL(released()), input, SLOT(selectAll()));
 	connect(another, SIGNAL(released()), inspect, SLOT(show()));

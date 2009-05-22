@@ -41,6 +41,7 @@ public slots:
 private:
 	QLabel* instructions;
 	QLabel* example_bits;
+	QLabel* links;
 	QTextEdit* input;
 	QPushButton* inspect;
 	QLabel* status;
