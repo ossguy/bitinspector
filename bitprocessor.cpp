@@ -126,7 +126,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 	another->hide();
 
 
-	setWindowTitle(tr("Bit Inspector"));
+	setWindowTitle(tr("Bit Inspector 1.0 Alpha 1"));
 
 	// on "Inspect", decode the bits in the input box
 	connect(inspect, SIGNAL(released()), this, SLOT(decodeBits()));
