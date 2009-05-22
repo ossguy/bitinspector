@@ -44,6 +44,10 @@ private:
 	QLabel* example_bits;
 	QTextEdit* input;
 	QPushButton* inspect;
+	QLabel* label_input;
+	QLabel* label_t1;
+	QLabel* label_t2;
+	QLabel* label_t3;
 	QLineEdit* out_t1;
 	QLineEdit* out_t2;
 	QLineEdit* out_t3;

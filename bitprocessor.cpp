@@ -32,6 +32,10 @@ BitProcessor::BitProcessor(QWidget* parent)
 	example_bits = new QLabel;
 	input = new QTextEdit;
 	inspect = new QPushButton(tr("&Inspect"));
+	label_input = new QLabel;
+	label_t1 = new QLabel;
+	label_t2 = new QLabel;
+	label_t3 = new QLabel;
 	out_t1 = new QLineEdit;
 	out_t2 = new QLineEdit;
 	out_t3 = new QLineEdit;
@@ -58,6 +62,12 @@ BitProcessor::BitProcessor(QWidget* parent)
 	// this keeps focus on the input textbox:
 	example_bits->setFocusPolicy(Qt::NoFocus);
 
+	// configure the input and track labels
+	label_input->setText(tr("Input"));
+	label_t1->setText(tr("Track 1"));
+	label_t2->setText(tr("Track 2"));
+	label_t3->setText(tr("Track 3"));
+
 	// configure the fields table
 	fields->setRowCount(0);
 	fields->setColumnCount(3);
@@ -65,24 +75,23 @@ BitProcessor::BitProcessor(QWidget* parent)
 		<< QString(tr("Field name")) << QString(tr("Track"))
 		<< QString(tr("Value on card")));
 
-	// hide widgets for output mode
-	out_t1->hide();
-	out_t2->hide();
-	out_t3->hide();
-	fields->hide();
-	another->hide();
-	show_input->hide();
-	hide_input->hide();
-
 	// arrange input and output widgets in layout
 	QVBoxLayout* layout = new QVBoxLayout;
 	layout->addWidget(instructions);
 	layout->addWidget(example_bits);
-	layout->addWidget(input);
 	layout->addWidget(inspect);
-	layout->addWidget(out_t1);
-	layout->addWidget(out_t2);
-	layout->addWidget(out_t3);
+
+	QGridLayout* grid = new QGridLayout;
+	grid->addWidget(label_input, 0, 0, Qt::AlignTop);
+	grid->addWidget(label_t1, 1, 0);
+	grid->addWidget(label_t2, 2, 0);
+	grid->addWidget(label_t3, 3, 0);
+	grid->addWidget(input, 0, 1);
+	grid->addWidget(out_t1, 1, 1);
+	grid->addWidget(out_t2, 2, 1);
+	grid->addWidget(out_t3, 3, 1);
+	layout->addLayout(grid);
+
 	layout->addWidget(fields);
 
 	QHBoxLayout* out_buttons = new QHBoxLayout;
@@ -92,6 +101,19 @@ BitProcessor::BitProcessor(QWidget* parent)
 	layout->addLayout(out_buttons);
 
 	setLayout(layout);
+
+	// hide widgets for output mode
+	label_input->hide();
+	label_t1->hide();
+	label_t2->hide();
+	label_t3->hide();
+	out_t1->hide();
+	out_t2->hide();
+	out_t3->hide();
+	fields->hide();
+	show_input->hide();
+	hide_input->hide();
+	another->hide();
 
 
 	setWindowTitle(tr("Bit Inspector"));
@@ -104,6 +126,9 @@ BitProcessor::BitProcessor(QWidget* parent)
 	connect(inspect, SIGNAL(released()), example_bits, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), input, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), inspect, SLOT(hide()));
+	connect(inspect, SIGNAL(released()), label_t1, SLOT(show()));
+	connect(inspect, SIGNAL(released()), label_t2, SLOT(show()));
+	connect(inspect, SIGNAL(released()), label_t3, SLOT(show()));
 	connect(inspect, SIGNAL(released()), out_t1, SLOT(show()));
 	connect(inspect, SIGNAL(released()), out_t2, SLOT(show()));
 	connect(inspect, SIGNAL(released()), out_t3, SLOT(show()));
@@ -117,6 +142,10 @@ BitProcessor::BitProcessor(QWidget* parent)
 	connect(another, SIGNAL(released()), input, SLOT(show()));
 	connect(another, SIGNAL(released()), input, SLOT(selectAll()));
 	connect(another, SIGNAL(released()), inspect, SLOT(show()));
+	connect(another, SIGNAL(released()), label_input, SLOT(hide()));
+	connect(another, SIGNAL(released()), label_t1, SLOT(hide()));
+	connect(another, SIGNAL(released()), label_t2, SLOT(hide()));
+	connect(another, SIGNAL(released()), label_t3, SLOT(hide()));
 	connect(another, SIGNAL(released()), out_t1, SLOT(hide()));
 	connect(another, SIGNAL(released()), out_t2, SLOT(hide()));
 	connect(another, SIGNAL(released()), out_t3, SLOT(hide()));
@@ -126,11 +155,13 @@ BitProcessor::BitProcessor(QWidget* parent)
 	connect(another, SIGNAL(released()), another, SLOT(hide()));
 
 	// on "Show Input", show the input textbox and replace with "Hide Input"
+	connect(show_input, SIGNAL(released()), label_input, SLOT(show()));
 	connect(show_input, SIGNAL(released()), input, SLOT(show()));
 	connect(show_input, SIGNAL(released()), show_input, SLOT(hide()));
 	connect(show_input, SIGNAL(released()), hide_input, SLOT(show()));
 
 	// on "Hide Input", hide the input textbox and replace with "Show Input"
+	connect(hide_input, SIGNAL(released()), label_input, SLOT(hide()));
 	connect(hide_input, SIGNAL(released()), input, SLOT(hide()));
 	connect(hide_input, SIGNAL(released()), hide_input, SLOT(hide()));
 	connect(hide_input, SIGNAL(released()), show_input, SLOT(show()));
