@@ -32,6 +32,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 	example_bits = new QLabel;
 	input = new QTextEdit;
 	inspect = new QPushButton(tr("&Inspect"));
+	status = new QLabel;
 	label_input = new QLabel;
 	label_t1 = new QLabel;
 	label_t2 = new QLabel;
@@ -79,6 +80,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 	QVBoxLayout* layout = new QVBoxLayout;
 	layout->addWidget(instructions);
 	layout->addWidget(example_bits);
+	layout->addWidget(status);
 
 	QGridLayout* grid = new QGridLayout;
 	grid->addWidget(label_input, 0, 0, Qt::AlignTop);
@@ -103,6 +105,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 	setLayout(layout);
 
 	// hide widgets for output mode
+	status->hide();
 	label_input->hide();
 	label_t1->hide();
 	label_t2->hide();
@@ -126,6 +129,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 	connect(inspect, SIGNAL(released()), example_bits, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), input, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), inspect, SLOT(hide()));
+	connect(inspect, SIGNAL(released()), status, SLOT(show()));
 	connect(inspect, SIGNAL(released()), label_t1, SLOT(show()));
 	connect(inspect, SIGNAL(released()), label_t2, SLOT(show()));
 	connect(inspect, SIGNAL(released()), label_t3, SLOT(show()));
@@ -142,6 +146,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 	connect(another, SIGNAL(released()), input, SLOT(show()));
 	connect(another, SIGNAL(released()), input, SLOT(selectAll()));
 	connect(another, SIGNAL(released()), inspect, SLOT(show()));
+	connect(another, SIGNAL(released()), status, SLOT(hide()));
 	connect(another, SIGNAL(released()), label_input, SLOT(hide()));
 	connect(another, SIGNAL(released()), label_t1, SLOT(hide()));
 	connect(another, SIGNAL(released()), label_t2, SLOT(hide()));
@@ -222,6 +227,7 @@ void BitProcessor::decodeBits()
 		fields->removeRow(0);
 	}
 
+	status->clear();
 	if (rv) {
 		// TODO: for debugging; replace with graphical error output
 		std::cout << "\tdecode error (" << rv << "): "
@@ -235,7 +241,9 @@ void BitProcessor::decodeBits()
 
 			// TODO: output "unknown card"
 		} else {
-			// TODO: output name of card (ie. "Driver's license")
+			// put the card name in the status bar
+			status->setText(QString(tr("Card name: ")) +
+				QString(result.name));
 
 			int i;
 
