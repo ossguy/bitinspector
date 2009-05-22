@@ -36,9 +36,9 @@ BitProcessor::BitProcessor(QWidget* parent)
 	label_t1 = new QLabel;
 	label_t2 = new QLabel;
 	label_t3 = new QLabel;
-	out_t1 = new QLineEdit;
-	out_t2 = new QLineEdit;
-	out_t3 = new QLineEdit;
+	out_t1 = new QLabel;
+	out_t2 = new QLabel;
+	out_t3 = new QLabel;
 	fields = new QTableWidget;
 	show_input = new QPushButton(tr("S&how Input"));
 	hide_input = new QPushButton(tr("&Hide Input"));
@@ -58,6 +58,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 		"000001101010000010001100100100101011111100000"));
 	// the following two lines are from
 	//  http://www.virtualbox.org/browser/trunk/src/VBox/Frontends/VirtualBox/src/QILabel.cpp?rev=16304&format=html#L304
+	// make the text in example_bits label selectable
 	example_bits->setTextInteractionFlags(Qt::TextBrowserInteraction);
 	// this keeps focus on the input textbox:
 	example_bits->setFocusPolicy(Qt::NoFocus);
@@ -66,10 +67,13 @@ BitProcessor::BitProcessor(QWidget* parent)
 	status->setObjectName("status");
 
 	// configure the input and track labels
-	label_input->setText(tr("Input"));
-	label_t1->setText(tr("Track 1"));
-	label_t2->setText(tr("Track 2"));
-	label_t3->setText(tr("Track 3"));
+	label_input->setText(tr("Input: "));
+	label_t1->setText(tr("Track 1: "));
+	label_t2->setText(tr("Track 2: "));
+	label_t3->setText(tr("Track 3: "));
+	out_t1->setTextInteractionFlags(Qt::TextBrowserInteraction);
+	out_t2->setTextInteractionFlags(Qt::TextBrowserInteraction);
+	out_t3->setTextInteractionFlags(Qt::TextBrowserInteraction);
 
 	// configure the fields table
 	fields->setRowCount(0);
@@ -93,6 +97,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 	grid->addWidget(out_t1, 1, 1);
 	grid->addWidget(out_t2, 2, 1);
 	grid->addWidget(out_t3, 3, 1);
+	grid->setColumnStretch(1, 1); // force track output to fill width
 	layout->addLayout(grid);
 
 	layout->addWidget(inspect); // at the bottom in input mode
