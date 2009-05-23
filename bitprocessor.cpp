@@ -83,7 +83,12 @@ BitProcessor::BitProcessor(QWidget* parent)
 		"You can also construct your own using the charts at:<br>"
 		"<a href=\"http://www.cyberd.co.uk/support/technotes/isocards.htm\">http://www.cyberd.co.uk/support/technotes/isocards.htm</a><br><br>"
 		"Please report any problems with Bit Inspector or suggestions "
-		"for improvement to <a href=\"mailto:denver@ossguy.com\">denver@ossguy.com</a>."
+		"for improvement to <a href=\"mailto:denver@ossguy.com\">denver@ossguy.com</a>.<br><br><br>"
+		"Copyright &copy; 2009 Denver Gingerich<br><br>"
+		"This program is free software; you can redistribute it and/or "
+		"modify it under the terms of the GNU General Public License "
+		"as published by the Free Software Foundation; either version "
+		"3 of the License, or (at your option) any later version."
 		));
 
 	// set name for status label; allows us to set stylesheet
