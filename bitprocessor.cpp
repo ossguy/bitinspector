@@ -77,6 +77,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 
 
 	// configure the message box with links to bitstreams and contact info
+	links->setWindowTitle(tr("Bit Inspector - More Information"));
 	links->setText(tr("Additional example bitstreams are available at:<br>"
 		"<a href=\"http://github.com/ossguy/libbitconvert/tree/master/test_data\">http://github.com/ossguy/libbitconvert/tree/master/test_data</a><br><br>"
 		"You can also construct your own using the charts at:<br>"
