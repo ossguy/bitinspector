@@ -12,7 +12,7 @@ $ make
 $ cd ../bitinspector
 $ ./autogen.sh
 $ make
-$ ln -s ../libbitconvert/formats formats
+$ ln -s ../libbitconvert/formats.txt formats.txt
 $ ./bitinspector
 
 Build instructions for other Unix-like operating systems should be similar.  If
