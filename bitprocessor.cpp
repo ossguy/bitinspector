@@ -63,12 +63,23 @@ BitProcessor::BitProcessor(QWidget* parent)
 	example_bits->setText(tr(
 		"00000001010001001011010100101100111001011011111000000000\n"
 		"000001101010000010001100100100101011111100000"));
-	// the following two lines are from
+	// the following four lines are from
 	//  http://www.virtualbox.org/browser/trunk/src/VBox/Frontends/VirtualBox/src/QILabel.cpp?rev=16304&format=html#L304
 	// make the text in example_bits label selectable
 	example_bits->setTextInteractionFlags(Qt::TextBrowserInteraction);
-	// this keeps focus on the input textbox:
+	// keep focus on the input textbox:
 	example_bits->setFocusPolicy(Qt::NoFocus);
+	more_info->setFocusPolicy(Qt::NoFocus);
+	inspect->setFocusPolicy(Qt::NoFocus);
+
+	// With only example_bits and more_info set to Qt::NoFocus, the input
+	//  box will usually get focus (ie. at startup and when switching back
+	//  using "Inspect Another").  However, if the user is in output mode
+	//  then switches to another application then back to Bit Inspector, and
+	//  then clicks "Inspect Another", the "Inspect" button will have focus
+	//  when we want the input box to have focus.  This is solved by setting
+	//  inspect's policy to Qt::NoFocus as well.
+
 
 	// configure the message box with links to bitstreams and contact info
 	links->setText(tr("Additional example bitstreams are available at:<br>"
