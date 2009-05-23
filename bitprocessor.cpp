@@ -28,7 +28,6 @@ BitProcessor::BitProcessor(QWidget* parent)
 	: QWidget(parent)
 {
 	instructions = new QLabel;
-	example_bits_heading = new QLabel;
 	example_bits = new QLabel;
 	links = new QMessageBox;
 	more_info = new QPushButton(tr("&More Information"));
@@ -51,13 +50,9 @@ BitProcessor::BitProcessor(QWidget* parent)
 	instructions->setText(tr("If you have a Bit Reader USB or compatible "
 		"device connected to this computer, swipe a card and click "
 		"\"Inspect\".  You can also paste a raw bitstream (1s and 0s) "
-		"into the textbox."));
+		"into the textbox.  If you don't have a bitstream, you can "
+		"copy and paste this one into the textbox:"));
 	instructions->setWordWrap(true);
-
-	// configure the example bitstream heading
-	example_bits_heading->setText(tr("If you don't have a bitstream, you "
-		"can copy and paste this one into the textbox:"));
-	example_bits_heading->setWordWrap(true);
 
 	// configure the label showing an example bitstream
 	example_bits->setText(tr(
@@ -112,7 +107,6 @@ BitProcessor::BitProcessor(QWidget* parent)
 	// arrange input and output widgets in layout
 	QVBoxLayout* layout = new QVBoxLayout;
 	layout->addWidget(instructions);
-	layout->addWidget(example_bits_heading);
 	layout->addWidget(example_bits);
 	layout->addWidget(more_info);
 	layout->addWidget(status);
@@ -162,7 +156,6 @@ BitProcessor::BitProcessor(QWidget* parent)
 
 	// on "Inspect", hide input widgets and show output widgets
 	connect(inspect, SIGNAL(released()), instructions, SLOT(hide()));
-	connect(inspect, SIGNAL(released()), example_bits_heading, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), example_bits, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), more_info, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), input, SLOT(hide()));
@@ -180,7 +173,6 @@ BitProcessor::BitProcessor(QWidget* parent)
 
 	// on "Inspect Another", show input widgets and hide output widgets
 	connect(another, SIGNAL(released()), instructions, SLOT(show()));
-	connect(another, SIGNAL(released()), example_bits_heading, SLOT(show()));
 	connect(another, SIGNAL(released()), example_bits, SLOT(show()));
 	connect(another, SIGNAL(released()), more_info, SLOT(show()));
 	connect(another, SIGNAL(released()), input, SLOT(show()));
