@@ -15,8 +15,9 @@
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see http://www.gnu.org/licenses/.
 
+# libbitconvert and libpcre locations; if no ../pcre, use the system libpcre
 INCLUDEPATH += ../libbitconvert
-LIBS += -L../libbitconvert -lbitconvert -lpcre
+LIBS += -L../libbitconvert -lbitconvert -L../pcre -lpcre
 
 # Input
 SOURCES += main.cpp bitprocessor.cpp
