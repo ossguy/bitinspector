@@ -303,12 +303,16 @@ void BitProcessor::decodeBits()
 	}
 
 	if (rv) {
+		// NOTE: style sheets are not supported on Mac OS X; see
+		//  http://doc.trolltech.com/4.5/qwidget.html#styleSheet-prop
 		setStyleSheet("QLabel#status { color: red }");
 		status->setText(tr("Decode error (") + QString::number(rv) +
 			tr("): ") + QString(bc_strerror(rv)));
 	} else {
 		rv = bc_find_fields(&result);
 		if (rv) {
+			// NOTE: style sheets are not supported on Mac OS X; see
+			//  http://doc.trolltech.com/4.5/qwidget.html#styleSheet-prop
 			setStyleSheet("QLabel#status { color: red }");
 			status->setText(tr("Find fields error (") +
 				QString::number(rv) + tr("): ") +
@@ -316,8 +320,11 @@ void BitProcessor::decodeBits()
 
 			// TODO: output "unknown card"
 		} else {
-			// put the card name in the status bar
+			// NOTE: style sheets are not supported on Mac OS X; see
+			//  http://doc.trolltech.com/4.5/qwidget.html#styleSheet-prop
 			setStyleSheet("");
+
+			// put the card name in the status bar
 			status->setText(tr("Card name: ") +
 				QString(result.name));
 
