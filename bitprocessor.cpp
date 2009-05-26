@@ -109,6 +109,10 @@ BitProcessor::BitProcessor(QWidget* parent)
 		"details.<br><br>"
 		"A copy of the GNU General Public License can be found in "
 		"COPYING.txt, which is distributed with this program."
+		"<br><br><br>"
+		"A list of licenses and copyright information for other "
+		"projects used in Bit Inspector is available in licenses.html, "
+		"which is distributed with this program."
 		));
 
 	// set name for status label; allows us to set stylesheet
