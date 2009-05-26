@@ -22,3 +22,6 @@ LIBS += -L../libbitconvert -lbitconvert -L../pcre -lpcre
 # Input
 SOURCES += main.cpp bitprocessor.cpp
 HEADERS += bitprocessor.h
+
+# Resources
+RC_FILE = bitinspector.rc
