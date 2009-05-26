@@ -60,24 +60,10 @@ BitProcessor::BitProcessor(QWidget* parent)
 	example_bits->setText(tr(
 		"00000001010001001011010100101100111001011011111000000000\n"
 		"000001101010000010001100100100101011111100000"));
-	// the following five lines are from
+	// the following line is from
 	//  http://www.virtualbox.org/browser/trunk/src/VBox/Frontends/VirtualBox/src/QILabel.cpp?rev=16304&format=html#L304
 	// make the text in example_bits label selectable
 	example_bits->setTextInteractionFlags(Qt::TextBrowserInteraction);
-	// keep focus on the input textbox:
-	example_bits->setFocusPolicy(Qt::NoFocus);
-	more_info->setFocusPolicy(Qt::NoFocus);
-	licensing->setFocusPolicy(Qt::NoFocus);
-	inspect->setFocusPolicy(Qt::NoFocus);
-
-	// With only example_bits, more_info, and licensing set to Qt::NoFocus,
-	//  the input box will usually get focus (ie. at startup and when
-	//  switching back using "Inspect Another").  However, if the user is in
-	//  output mode then switches to another application then back to Bit
-	//  Inspector, and then clicks "Inspect Another", the "Inspect" button
-	//  will have focus when we want the input box to have focus.  This is
-	//  solved by setting inspect's policy to Qt::NoFocus as well.
-
 
 	// configure the message box with links to bitstreams and contact info
 	links->setWindowTitle(tr("Bit Inspector - More Information"));
@@ -186,6 +172,9 @@ BitProcessor::BitProcessor(QWidget* parent)
 
 	setWindowTitle(tr("Bit Inspector 1.0 Alpha 1"));
 
+	// put focus on the input textbox at startup
+	input->setFocus();
+
 	// on "Inspect", decode the bits in the input box
 	connect(inspect, SIGNAL(released()), this, SLOT(decodeBits()));
 
@@ -213,7 +202,6 @@ BitProcessor::BitProcessor(QWidget* parent)
 	connect(another, SIGNAL(released()), more_info, SLOT(show()));
 	connect(another, SIGNAL(released()), licensing, SLOT(show()));
 	connect(another, SIGNAL(released()), input, SLOT(show()));
-	connect(another, SIGNAL(released()), input, SLOT(selectAll()));
 	connect(another, SIGNAL(released()), inspect, SLOT(show()));
 	connect(another, SIGNAL(released()), status, SLOT(hide()));
 	connect(another, SIGNAL(released()), label_input, SLOT(hide()));
@@ -227,6 +215,10 @@ BitProcessor::BitProcessor(QWidget* parent)
 	connect(another, SIGNAL(released()), show_input, SLOT(hide()));
 	connect(another, SIGNAL(released()), hide_input, SLOT(hide()));
 	connect(another, SIGNAL(released()), another, SLOT(hide()));
+
+	// on "Inspect Another", put focus on input textbox and select the text
+	connect(another, SIGNAL(released()), input, SLOT(setFocus()));
+	connect(another, SIGNAL(released()), input, SLOT(selectAll()));
 
 	// on "Show Input", show the input textbox and replace with "Hide Input"
 	connect(show_input, SIGNAL(released()), label_input, SLOT(show()));
