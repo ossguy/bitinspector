@@ -86,7 +86,8 @@ BitProcessor::BitProcessor(QWidget* parent)
 		"You can also construct your own using the charts at:<br>"
 		"<a href=\"http://www.cyberd.co.uk/support/technotes/isocards.htm\">http://www.cyberd.co.uk/support/technotes/isocards.htm</a><br><br>"
 		"Please report any problems with Bit Inspector or suggestions "
-		"for improvement to <a href=\"mailto:denver@ossguy.com\">denver@ossguy.com</a>."
+		"for improvement to Denver Gingerich "
+		"&lt;<a href=\"mailto:denver@ossguy.com\">denver@ossguy.com</a>&gt;."
 		));
 
 	// configure the message box with licensing information
