@@ -31,6 +31,8 @@ BitProcessor::BitProcessor(QWidget* parent)
 	example_bits = new QLabel;
 	links = new QMessageBox;
 	more_info = new QPushButton(tr("&More Information"));
+	license_info = new QMessageBox;
+	licensing = new QPushButton(tr("&Licensing"));
 	input = new QTextEdit;
 	inspect = new QPushButton(tr("&Inspect"));
 	status = new QLabel;
@@ -58,22 +60,23 @@ BitProcessor::BitProcessor(QWidget* parent)
 	example_bits->setText(tr(
 		"00000001010001001011010100101100111001011011111000000000\n"
 		"000001101010000010001100100100101011111100000"));
-	// the following four lines are from
+	// the following five lines are from
 	//  http://www.virtualbox.org/browser/trunk/src/VBox/Frontends/VirtualBox/src/QILabel.cpp?rev=16304&format=html#L304
 	// make the text in example_bits label selectable
 	example_bits->setTextInteractionFlags(Qt::TextBrowserInteraction);
 	// keep focus on the input textbox:
 	example_bits->setFocusPolicy(Qt::NoFocus);
 	more_info->setFocusPolicy(Qt::NoFocus);
+	licensing->setFocusPolicy(Qt::NoFocus);
 	inspect->setFocusPolicy(Qt::NoFocus);
 
-	// With only example_bits and more_info set to Qt::NoFocus, the input
-	//  box will usually get focus (ie. at startup and when switching back
-	//  using "Inspect Another").  However, if the user is in output mode
-	//  then switches to another application then back to Bit Inspector, and
-	//  then clicks "Inspect Another", the "Inspect" button will have focus
-	//  when we want the input box to have focus.  This is solved by setting
-	//  inspect's policy to Qt::NoFocus as well.
+	// With only example_bits, more_info, and licensing set to Qt::NoFocus,
+	//  the input box will usually get focus (ie. at startup and when
+	//  switching back using "Inspect Another").  However, if the user is in
+	//  output mode then switches to another application then back to Bit
+	//  Inspector, and then clicks "Inspect Another", the "Inspect" button
+	//  will have focus when we want the input box to have focus.  This is
+	//  solved by setting inspect's policy to Qt::NoFocus as well.
 
 
 	// configure the message box with links to bitstreams and contact info
@@ -83,12 +86,28 @@ BitProcessor::BitProcessor(QWidget* parent)
 		"You can also construct your own using the charts at:<br>"
 		"<a href=\"http://www.cyberd.co.uk/support/technotes/isocards.htm\">http://www.cyberd.co.uk/support/technotes/isocards.htm</a><br><br>"
 		"Please report any problems with Bit Inspector or suggestions "
-		"for improvement to <a href=\"mailto:denver@ossguy.com\">denver@ossguy.com</a>.<br><br><br>"
-		"Copyright &copy; 2009 Denver Gingerich<br><br>"
-		"This program is free software; you can redistribute it and/or "
+		"for improvement to <a href=\"mailto:denver@ossguy.com\">denver@ossguy.com</a>."
+		));
+
+	// configure the message box with licensing information
+	license_info->setWindowTitle(tr("Bit Inspector - Licensing"));
+	license_info->setText(tr(
+		"Bit Inspector is Copyright &copy; 2009  Denver Gingerich "
+		"&lt;<a href=\"mailto:denver@ossguy.com\">denver@ossguy.com</a>&gt;<br><br>"
+		"Qt, used in Bit Inspector, is Copyright &copy; 2009  Nokia "
+		"Corporation and/or its subsidiary(-ies).  Contact: Qt "
+		"Software Information "
+		"&lt;<a href=\"mailto:qt-info@nokia.com\">qt-info@nokia.com</a>&gt;<br><br>"
+		"This program is free software: you can redistribute it and/or "
 		"modify it under the terms of the GNU General Public License "
-		"as published by the Free Software Foundation; either version "
-		"3 of the License, or (at your option) any later version."
+		"version 3.<br><br>"
+		"This program is distributed in the hope that it will be "
+		"useful, but WITHOUT ANY WARRANTY; without even the implied "
+		"warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR "
+		"PURPOSE.  See the GNU General Public License for more "
+		"details.<br><br>"
+		"A copy of the GNU General Public License can be found in "
+		"COPYING.txt, which is distributed with this program."
 		));
 
 	// set name for status label; allows us to set stylesheet
@@ -114,7 +133,10 @@ BitProcessor::BitProcessor(QWidget* parent)
 	QVBoxLayout* layout = new QVBoxLayout;
 	layout->addWidget(instructions);
 	layout->addWidget(example_bits);
-	layout->addWidget(more_info);
+	QHBoxLayout* info = new QHBoxLayout;
+	info->addWidget(more_info);
+	info->addWidget(licensing);
+	layout->addLayout(info);
 	layout->addWidget(status);
 
 	QGridLayout* grid = new QGridLayout;
@@ -164,6 +186,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 	connect(inspect, SIGNAL(released()), instructions, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), example_bits, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), more_info, SLOT(hide()));
+	connect(inspect, SIGNAL(released()), licensing, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), input, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), inspect, SLOT(hide()));
 	connect(inspect, SIGNAL(released()), status, SLOT(show()));
@@ -181,6 +204,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 	connect(another, SIGNAL(released()), instructions, SLOT(show()));
 	connect(another, SIGNAL(released()), example_bits, SLOT(show()));
 	connect(another, SIGNAL(released()), more_info, SLOT(show()));
+	connect(another, SIGNAL(released()), licensing, SLOT(show()));
 	connect(another, SIGNAL(released()), input, SLOT(show()));
 	connect(another, SIGNAL(released()), input, SLOT(selectAll()));
 	connect(another, SIGNAL(released()), inspect, SLOT(show()));
@@ -211,6 +235,9 @@ BitProcessor::BitProcessor(QWidget* parent)
 
 	// on "More Information", show links message box
 	connect(more_info, SIGNAL(released()), links, SLOT(exec()));
+
+	// on "Licensing", show license information message box
+	connect(licensing, SIGNAL(released()), license_info, SLOT(exec()));
 }
 
 void BitProcessor::decodeBits()

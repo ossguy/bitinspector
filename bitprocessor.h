@@ -44,6 +44,8 @@ private:
 	QLabel* example_bits;
 	QMessageBox* links;
 	QPushButton* more_info;
+	QMessageBox* license_info;
+	QPushButton* licensing;
 	QTextEdit* input;
 	QPushButton* inspect;
 	QLabel* status;
