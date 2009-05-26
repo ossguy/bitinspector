@@ -88,6 +88,8 @@ BitProcessor::BitProcessor(QWidget* parent)
 		"Please report any problems with Bit Inspector or suggestions "
 		"for improvement to Denver Gingerich "
 		"&lt;<a href=\"mailto:denver@ossguy.com\">denver@ossguy.com</a>&gt;."
+		"<br><br>"
+		"Bit Inspector home page: <a href=\"http://github.com/ossguy/bitinspector\">http://github.com/ossguy/bitinspector</a>"
 		));
 
 	// configure the message box with licensing information
