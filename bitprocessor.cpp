@@ -69,7 +69,13 @@ BitProcessor::BitProcessor(QWidget* parent)
 	links->setWindowTitle(tr("Bit Inspector - More Information"));
 	links->setText(tr("Additional example bitstreams are available at:<br>"
 		"<a href=\"http://github.com/ossguy/libbitconvert/tree/master/test_data\">http://github.com/ossguy/libbitconvert/tree/master/test_data</a><br><br>"
-		"You can also construct your own using the charts at:<br>"
+		"The textbox is expected to contain up to 3 lines.  Lines 1 "
+		"and 3 are assumed to use the ALPHA encoding while line 2 is "
+		"assumed to use the BCD encoding.  Lines should begin with the "
+		"start sentinel, should end with the end sentinel, and can be "
+		"preceded and succeeded by an arbitrary number of 0s.  For "
+		"details on these encodings so you can construct your own "
+		"bitstreams, see the charts at:<br>"
 		"<a href=\"http://www.cyberd.co.uk/support/technotes/isocards.htm\">http://www.cyberd.co.uk/support/technotes/isocards.htm</a><br><br>"
 		"Please report any problems with Bit Inspector or suggestions "
 		"for improvement to Denver Gingerich "
@@ -298,8 +304,15 @@ void BitProcessor::decodeBits()
 		// NOTE: style sheets are not supported on Mac OS X; see
 		//  http://doc.trolltech.com/4.5/qwidget.html#styleSheet-prop
 		setStyleSheet("QLabel#status { color: red }");
-		status->setText(tr("Decode error: ") +
-			QString(bc_strerror(rv)));
+
+		if (BCERR_PARITY_MISMATCH == rv) {
+			status->setText(tr("Decode error: input is expected to "
+				"be ALPHA or BCD; see \"More Information\" for "
+				"details"));
+		} else {
+			status->setText(tr("Decode error: ") +
+				QString(bc_strerror(rv)));
+		}
 	} else {
 		rv = bc_find_fields(&result);
 		if (rv) {
