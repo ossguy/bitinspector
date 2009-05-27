@@ -316,13 +316,25 @@ void BitProcessor::decodeBits()
 	} else {
 		rv = bc_find_fields(&result);
 		if (rv) {
+			QString prefix;
+
 			// NOTE: style sheets are not supported on Mac OS X; see
 			//  http://doc.trolltech.com/4.5/qwidget.html#styleSheet-prop
-			setStyleSheet("QLabel#status { color: red }");
-			status->setText(tr("Find fields error: ") +
-				QString(bc_strerror(rv)));
+			if (BCERR_NO_MATCHING_FORMAT == rv) {
+				setStyleSheet("");
+				prefix = tr("Unknown card: ");
+			} else {
+				setStyleSheet("QLabel#status { color: red }");
+				prefix = tr("Find fields error: ");
+				if (rv & BCERR_MASK_FORMAT &&
+					BCERR_NO_FORMAT_FILE != rv) {
 
-			// TODO: output "unknown card"
+					prefix += tr("problem in formats "
+						"file: ");
+				}
+			}
+
+			status->setText(prefix + QString(bc_strerror(rv)));
 		} else {
 			// NOTE: style sheets are not supported on Mac OS X; see
 			//  http://doc.trolltech.com/4.5/qwidget.html#styleSheet-prop
