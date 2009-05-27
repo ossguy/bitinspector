@@ -306,9 +306,9 @@ void BitProcessor::decodeBits()
 		setStyleSheet("QLabel#status { color: red }");
 
 		if (BCERR_PARITY_MISMATCH == rv) {
-			status->setText(tr("Decode error: input is expected to "
-				"be ALPHA or BCD; see \"More Information\" for "
-				"details"));
+			status->setText(tr("Decode error: input must be ALPHA "
+				"or BCD - see \"More Information\" for "
+				"details; partial results shown"));
 		} else {
 			status->setText(tr("Decode error: ") +
 				QString(bc_strerror(rv)));
