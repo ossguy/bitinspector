@@ -278,21 +278,27 @@ void BitProcessor::decodeBits()
 
 	int rv = bc_decode(&in, &result);
 
+	// check if output for all tracks is empty
+	bool output_empty = true;
+
 	// populate the fields; result fields will be sane even if rv is error
 	if (NULL == result.t1) {
 		out_t1->clear();
 	} else {
 		out_t1->setText(QString(result.t1));
+		output_empty = false;
 	}
 	if (NULL == result.t2) {
 		out_t2->clear();
 	} else {
 		out_t2->setText(QString(result.t2));
+		output_empty = false;
 	}
 	if (NULL == result.t3) {
 		out_t3->clear();
 	} else {
 		out_t3->setText(QString(result.t3));
+		output_empty = false;
 	}
 
 	// clear the fields table
@@ -313,6 +319,14 @@ void BitProcessor::decodeBits()
 			status->setText(tr("Decode error: ") +
 				QString(bc_strerror(rv)));
 		}
+	} else if (output_empty) {
+		// NOTE: style sheets are not supported on Mac OS X; see
+		//  http://doc.trolltech.com/4.5/qwidget.html#styleSheet-prop
+		setStyleSheet("");
+
+		status->setText(tr("Nothing to decode - click \"Inspect "
+			"Another\", enter a bitstream into the textbox, and "
+			"click \"Inspect\""));
 	} else {
 		rv = bc_find_fields(&result);
 		if (rv) {
