@@ -176,7 +176,7 @@ BitProcessor::BitProcessor(QWidget* parent)
 	another->hide();
 
 
-	setWindowTitle(tr("Bit Inspector 1.0 Beta 1"));
+	setWindowTitle(tr("Bit Inspector 1.0 Beta 1a"));
 
 	// put focus on the input textbox at startup
 	input->setFocus();
