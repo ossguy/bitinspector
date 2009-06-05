@@ -2,6 +2,9 @@ Bit Inspector is a graphical Qt front-end for libbitconvert.  Bit Inspector
 converts 1s and 0s from magnetic stripes into more meaningful information, such
 as names and card numbers.
 
+Windows XP/Vista executables of Bit Inspector can be downloaded from
+http://ossguy.com/bitinspector/.
+
 To build and run Bit Inspector on Ubuntu 9.04, execute the following commands:
 
 $ sudo apt-get install build-essential libpcre3-dev libqt4-dev git-core
